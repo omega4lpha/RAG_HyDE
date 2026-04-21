@@ -5,7 +5,7 @@ import time
 import requests
 from datetime import datetime
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 from flask_socketio import SocketIO
 from werkzeug.utils import secure_filename
 
@@ -189,6 +189,17 @@ def borrar_archivo():
     except Exception as e: emit_log(f"[WARN] ChromaDB Delete warning: {e}")
 
     return jsonify({"status": "ok"})
+
+@app.route('/api/descargar/<path:filename>')
+def descargar_archivo(filename):
+    """Permite al usuario descargar el documento físico original desde el repositorio."""
+    try:
+        emit_log(f"[SISTEMA] Descargando archivo original: {filename}")
+        return send_from_directory(FOLDER_FUENTES, filename, as_attachment=True)
+    except Exception as e:
+        emit_log(f"[ERROR] Fallo al descargar {filename}: {e}")
+        return jsonify({"error": "Archivo no encontrado"}), 404
+
 
 @app.route('/stop', methods=['POST'])
 def stop():

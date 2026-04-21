@@ -15,9 +15,9 @@ const btnUpload = document.getElementById('btn-upload');
 const fileListTags = document.getElementById('file-list-tags');
 const fileNameDisplay = document.getElementById('file-name-display');
 
-const SVG_DOCUMENT_ICON = `<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`;
-const SVG_DELETE_ICON = `<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
-
+const SVG_DOCUMENT_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`;
+const SVG_DELETE_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
+const SVG_DOWNLOAD_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>`; // Nuevo ícono de descarga
 // --- MEMORIA A CORTO PLAZO DEL FRONTEND ---
 let memoriaConversacion = [];
 
@@ -47,13 +47,23 @@ async function actualizarListaArchivos() {
             fileListTags.innerHTML = data.archivos.map(f => {
                 const cssClass = f.estado === 'Indexado' ? 'status-ok' : 'status-wait';
                 return `
-                    <span class="file-tag ${cssClass}">
+                    <span class="file-tag ${cssClass}" style="display: flex; align-items: center; gap: 8px;">
                         ${SVG_DOCUMENT_ICON} 
                         <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${f.nombre}</span> 
-                        <small style="margin-left:10px; opacity: 0.7;">(${f.estado})</small>
-                        <button class="btn-delete-file" onclick="borrarArchivo('${f.nombre}')" title="Eliminar de BD">
-                            ${SVG_DELETE_ICON}
-                        </button>
+                        <small style="opacity: 0.7;">(${f.estado})</small>
+                        
+                        <div style="display: flex; gap: 4px; margin-left: auto;">
+                            <a href="/api/descargar/${encodeURIComponent(f.nombre)}" title="Descargar documento" target="_blank" 
+                               style="display: flex; align-items: center; justify-content: center; padding: 4px; color: inherit; text-decoration: none; opacity: 0.7; transition: opacity 0.2s;"
+                               onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                                ${SVG_DOWNLOAD_ICON}
+                            </a>
+                            <button class="btn-delete-file" onclick="borrarArchivo('${f.nombre}')" title="Eliminar de BD" 
+                                    style="background: transparent; border: none; color: inherit; cursor: pointer; padding: 4px; opacity: 0.7; transition: opacity 0.2s;"
+                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                                ${SVG_DELETE_ICON}
+                            </button>
+                        </div>
                     </span>
                 `;
             }).join('');
