@@ -1,0 +1,360 @@
+/**
+ * RAG Sentinel - Hoja de Estilos Principal
+ * Arquitectura: Basada en componentes y variables globales.
+ * Tema: Dark/Crimson (Alerta/Sistema Crítico)
+ */
+
+/* ==========================================================================
+   1. VARIABLES GLOBALES (Design Tokens)
+   ========================================================================== */
+:root {
+    /* Paleta de Colores - Fondos */
+    --bg-base: #0f0f0f;
+    --bg-panel: #1a0505;
+    --bg-console: #000000;
+    --bg-chat: linear-gradient(180deg, #120202 0%, #0a0a0a 100%);
+    
+    /* Paleta de Colores - Acentos y Bordes */
+    --accent-primary: #ff4444;
+    --accent-hover: #ff6666;
+    --accent-dark: #881111;
+    --accent-dark-hover: #aa1111;
+    
+    --border-subtle: #331111;
+    --border-mid: #441111;
+    --border-strong: #551111;
+
+    /* Paleta de Colores - Textos */
+    --text-primary: #e0e0e0;
+    --text-muted: #888888;
+    --text-console: #ff6666;
+    
+    /* Tipografía */
+    --font-sans: 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'Consolas', monospace;
+    
+    /* Espaciado y Estructura */
+    --radius-sm: 4px;
+    --radius-lg: 12px;
+}
+
+/* ==========================================================================
+   2. RESET Y BASE
+   ========================================================================== */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: var(--font-sans); 
+}
+
+body { 
+    background-color: var(--bg-base); 
+    color: var(--text-primary); 
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+/* Contenedor Maestro */
+.app-container { 
+    display: flex; 
+    height: 100vh; 
+}
+
+/* ==========================================================================
+   3. SCROLLBARS GLOBALES (Webkit)
+   ========================================================================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-base);
+    border-left: 1px solid var(--border-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* ==========================================================================
+   4. LAYOUT PRINCIPAL (Zona de Chat y Header)
+   ========================================================================== */
+.chat-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    border-right: 1px solid var(--border-subtle); 
+}
+
+header { 
+    background: var(--bg-panel); 
+    padding: 15px; 
+    border-bottom: 2px solid var(--border-strong); 
+}
+
+header h2 { 
+    color: var(--accent-primary); 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+}
+
+/* ==========================================================================
+   5. COMPONENTE: GESTOR DE ARCHIVOS Y ETIQUETAS
+   ========================================================================== */
+.file-manager { 
+    background: #121212; 
+    padding: 10px; 
+    border: 1px solid var(--border-mid); 
+    border-radius: var(--radius-sm); 
+    margin-top: 10px; 
+}
+
+#btn-upload { 
+    background: var(--accent-dark); 
+    color: #ffffff; 
+    border: none; 
+    padding: 5px 10px; 
+    cursor: pointer; 
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+}
+
+#btn-upload:hover { 
+    background: var(--accent-dark-hover); 
+}
+/* --- ESTILOS DEL INPUT DE ARCHIVO FALSO --- */
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: var(--bg-console);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.custom-file-upload:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* --- BOTÓN DE ELIMINAR (CRUZ) --- */
+.btn-delete-file {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+}
+
+.btn-delete-file svg {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    fill: currentColor;
+}
+
+.btn-delete-file:hover {
+    opacity: 1;
+    color: #ffffff;
+    background-color: var(--accent-primary);
+    border-radius: 50%;
+}
+/* Contenedor de lista con scroll interno */
+#file-list-tags {
+    max-height: 120px; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; 
+    gap: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+}
+
+/* Etiquetas de estado de archivos */
+.file-tag {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    border: 1px solid transparent;
+}
+
+.file-tag svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+/* Modificadores de estado para archivos */
+.status-ok { 
+    background-color: #2a0a0a; 
+    color: var(--accent-primary); 
+    border-color: var(--border-strong); 
+}
+
+.status-wait { 
+    background-color: #1a1a1a; 
+    color: var(--text-muted); 
+    border-color: #333333; 
+}
+
+/* ==========================================================================
+   6. COMPONENTE: HISTORIAL DE CHAT Y MENSAJES
+   ========================================================================== */
+.chat-history { 
+    flex: 1; 
+    padding: 20px; 
+    overflow-y: auto; 
+    background: var(--bg-chat); 
+}
+
+.user-msg { 
+    margin-left: auto; 
+    background: var(--border-strong); 
+    padding: 12px; 
+    border-radius: var(--radius-lg) var(--radius-lg) 0 var(--radius-lg); 
+    border: 1px solid #772222; 
+    max-width: 80%;
+}
+
+.bot-answer { 
+    background: #1a1a1a; 
+    padding: 15px; 
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 0; 
+    border: 1px solid var(--border-mid); 
+    white-space: normal;
+    line-height: 1.6; 
+}
+
+.bot-answer p {
+    margin: 0 0 10px 0; /* Un pequeño margen abajo para separar párrafos */
+}
+
+.bot-answer p:last-child {
+    margin-bottom: 0;
+}
+
+.bot-answer ul, .bot-answer ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+
+.context-box { 
+    border-left: 3px solid var(--accent-primary); 
+    background: #220505; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    font-size: 0.8rem; 
+}
+
+/* ==========================================================================
+   7. COMPONENTE: ÁREA DE INPUT (Consulta)
+   ========================================================================== */
+.input-area { 
+    display: flex; 
+    padding: 20px; 
+    background: var(--bg-panel); 
+    gap: 10px; 
+    border-top: 2px solid var(--border-strong); 
+}
+
+#user-input { 
+    flex: 1; 
+    background: var(--bg-console); 
+    border: 1px solid var(--border-strong); 
+    color: var(--accent-primary); 
+    padding: 12px; 
+    border-radius: var(--radius-sm); 
+    outline: none; 
+    transition: border-color 0.2s ease;
+}
+
+#user-input:focus {
+    border-color: var(--accent-hover);
+}
+
+#btn-send { 
+    background: var(--accent-primary); 
+    color: #000000; 
+    font-weight: bold; 
+    padding: 0 25px; 
+    border-radius: var(--radius-sm); 
+    border: none; 
+    cursor: pointer; 
+    transition: filter 0.2s ease;
+}
+
+#btn-send:hover {
+    filter: brightness(1.2);
+}
+
+#btn-stop { 
+    background: var(--text-muted); 
+    color: #ffffff; 
+    padding: 0 20px; 
+    border-radius: var(--radius-sm); 
+    border: none; 
+    cursor: pointer; 
+}
+
+/* ==========================================================================
+   8. COMPONENTE: CONSOLA DE ADMINISTRACIÓN LATERAL
+   ========================================================================== */
+.admin-section { 
+    width: 320px; 
+    background: var(--bg-console); 
+    display: flex; 
+    flex-direction: column; 
+    border-left: 1px solid var(--border-subtle); 
+}
+
+.admin-section h3 { 
+    padding: 10px; 
+    font-size: 0.8rem; 
+    color: var(--accent-primary); 
+    background: var(--bg-panel); 
+}
+
+.console { 
+    flex: 1; 
+    padding: 10px; 
+    font-family: var(--font-mono); 
+    font-size: 0.75rem; 
+    color: var(--text-console); 
+    overflow-y: auto; 
+    line-height: 1.4;
+}
+
+/* Efectos de la consola */
+.blinking-cursor { 
+    width: 8px; 
+    height: 1.2em; 
+    background: var(--accent-primary); 
+    display: inline-block; 
+    animation: blink 1s infinite; 
+}
+
+@keyframes blink { 
+    50% { opacity: 0; } 
+}

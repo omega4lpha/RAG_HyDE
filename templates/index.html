@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Sentinel | LM Studio Backend</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <main class="chat-section">
+            <header>
+                <h2>RAG Sentinel (Conexión LM Studio)</h2>
+                
+                <div class="file-manager">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label for="file-input" class="custom-file-upload">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right:5px; vertical-align:text-bottom;"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                            Explorar...
+                        </label>
+                        <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt" style="display: none;">
+                        
+                        <span id="file-name-display" style="font-size: 0.8rem; color: #888; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Ningún archivo seleccionado</span>
+                        
+                        <button id="btn-upload">Subir e Indexar</button>
+                    </div>
+                    
+                    <div id="file-list-container" style="margin-top: 15px; border-top: 1px solid #441111; padding-top: 10px;">
+                        <span style="font-size: 0.8rem; color: #ff6666; font-weight: bold; margin-bottom: 5px; display: block;">Estado de la Base de Datos:</span>
+                        <div id="file-list-tags"></div>
+                    </div>
+                </div>
+            </header>
+            
+            <div id="chat-history" class="chat-history">
+                <div class="message bot-msg">
+                    <div class="bot-answer">
+                        [SISTEMA] Conexión establecida. Motor RAG listo. Base de datos vectorial activa. Por favor, ingrese su consulta.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Ingrese su consulta sobre los documentos indexados..." autocomplete="off">
+                <button id="btn-stop" style="display: none;">Detener Inferencia</button>
+                <button id="btn-send">Ejecutar Consulta</button>
+            </div>
+        </main>
+
+        <aside class="admin-section">
+            <h3>Terminal de Sistema</h3>
+            <div id="admin-console" class="console">
+                <div>> Inicializando consola de telemetría...</div>
+                <div>> Esperando conexión con backend de Flask...</div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="/static/socket.io.js"></script> 
+    <script src="/static/marked.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
